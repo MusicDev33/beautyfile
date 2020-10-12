@@ -58,6 +58,51 @@ const homeDict = {
 
 const homePath = homeDict[process.platform];
 
+app.get('/psc6150/:user', async (req, res, next) => {
+
+  const totalPath = `${homePath}/${req.params.user}`;
+
+  const { stdout, stderr } = await exec(`ls ${totalPath}`);
+
+  const contents = stdout.trim().split(/\r?\n/);
+
+  const directories = [];
+  const files = [];
+
+  for (const item of contents) {
+    let file = '';
+    if (item.includes(' ')) {
+      file = `'${path.join(totalPath, item)}'`;
+    } else {
+      file = path.join(totalPath, item);
+    }
+
+    const output = await exec(`file ${file}`);
+    const isDirectory = output.stdout.split(':')[1].trim().toLowerCase();
+    if (isDirectory == 'directory') {
+      directories.push(item);
+    } else {
+      files.push(item);
+    }
+  }
+
+  console.log(req.originalUrl);
+
+  const payload = {
+    id: req.params.filepath,
+    path: req.params,
+    user: req.params.user,
+    dirs: directories,
+    files: files,
+    currentRoute: req.originalUrl
+  }
+
+  // res.header("Content-Type",'application/json');
+  // res.send(JSON.stringify(payload, null, 4));
+
+  res.render(__dirname + '/views/pages/main.njk', payload);
+});
+
 app.get('/psc6150/:user/:filepath*', async (req, res, next) => {
 
   const totalPath = `${homePath}/${req.params.user}/${req.params.filepath}/${req.params[0]}`;
