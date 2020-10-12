@@ -32,7 +32,9 @@ function traverseDir(dir) {
 
 traverseDir(__dirname + '/views');
 
+/*
 fs.writeFile(`${__dirname}/scss/pages/_importer.scss`, importString, (err) => {
   if (err) return console.log(err);
   console.log('importer.scss written!');
 });
+*/

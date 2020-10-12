@@ -51,11 +51,18 @@ app.use(cors());
 
 // Default browser behaviour fix
 
+const homeDict = {
+  'darwin': '/Users',
+  'linux': '/home'
+};
+
+const homePath = homeDict[process.platform];
+
 app.get('/psc6150/:user/:filepath*', async (req, res, next) => {
 
-  const totalPath = `/home/${req.params.user}/${req.params.filepath}/${req.params[0]}`;
+  const totalPath = `${homePath}/${req.params.user}/${req.params.filepath}/${req.params[0]}`;
 
-  const { stdout, stderr } = await exec(`ls --group-directories-first ${totalPath}`);
+  const { stdout, stderr } = await exec(`ls ${totalPath}`);
 
   const contents = stdout.trim().split(/\r?\n/);
 
