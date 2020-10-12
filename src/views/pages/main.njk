@@ -1,9 +1,27 @@
 {% extends "universal/template.njk" %}
 
 {% block content %}
-  <div class="row justify-content-center">
-    <div class="col-6">
-      hi
-    </div>
+  <div class="row mt-3">
+    <h4>Directories</h4>
+    {% for directory in dirs %}
+      <div class="col-4 my-2 px-2">
+        <a href="{{ currentRoute }}/{{ directory }}">
+          <div class="w-100 obj p-2">
+            <i class="fas fa-folder"></i> {{ directory }}
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="row mt-3">
+    <h4>Files</h4>
+    {% for file in files %}
+      <div class="col-4 my-2 px-2">
+        <div class="w-100 obj p-2">
+          <i class="fad fa-file-edit"></i> {{ file }}
+        </div>
+      </div>
+    {% endfor %}
   </div>
 {% endblock %}

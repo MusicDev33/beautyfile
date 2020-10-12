@@ -1,3 +1,43 @@
-.test {
-  border: none;
+a {
+  text-decoration: none;
+}
+
+.obj {
+  $main-color: #888;
+  $highlight-color: #08dbb3;
+
+  color: $main-color;
+  cursor: pointer;
+  border-radius: 12px;
+  border: 1px solid $main-color;
+  transition: 0.3s;
+  font-size: 110%;
+  overflow: hidden;
+
+  &:hover {
+    color: $highlight-color;
+    border-color: $highlight-color;
+  }
+}
+
+.folder {
+  $main-color: #888;
+  $highlight-color: #08dbb3;
+
+  color: $main-color;
+  cursor: pointer;
+  border-radius: 12px;
+  border: 1px solid $main-color;
+  transition: 0.3s;
+  font-size: 110%;
+  overflow: hidden;
+
+  &:hover {
+    color: $highlight-color;
+    border-color: $highlight-color;
+  }
+}
+
+.file {
+
 }

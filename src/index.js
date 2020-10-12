@@ -44,7 +44,7 @@ app.use(baseUrl + 'scss', sass({
 app.use(cors());
 
 // Images can be retrieved with http://url/biotec/image/:imagename
-// require('./rsc-routes')(app);
+require('./rsc-routes')(app);
 
 
 // Pages
@@ -86,18 +86,21 @@ app.get('/psc6150/:user/:filepath*', async (req, res, next) => {
     }
   }
 
+  console.log(req.originalUrl);
+
   const payload = {
     id: req.params.filepath,
     path: req.params,
     user: req.params.user,
     dirs: directories,
-    files: files
+    files: files,
+    currentRoute: req.originalUrl
   }
 
   // res.header("Content-Type",'application/json');
   // res.send(JSON.stringify(payload, null, 4));
 
-  res.render(__dirname + '/views/pages/main.njk');
+  res.render(__dirname + '/views/pages/main.njk', payload);
 });
 
 app.listen(port, () => {

@@ -2,9 +2,11 @@
   {% from "universal/header.njk" import header %}
   {{ header() }}
 
-  {% block content %}
+  <div class="container mb-4">
+    {% block content %}
 
-  {% endblock %}
+    {% endblock %}
+  </div>
 
   {% from "universal/scripts.njk" import scripts %}
 </html>
