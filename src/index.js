@@ -24,12 +24,12 @@ const baseUrl = '/';
 const port = 3000;
 
 const app = express();
-/*
+
 let nunEnv = nunjucks.configure(__dirname + '/views', {
   autoescape: true,
   express: app
 });
-*/
+
 /*
 app.use(baseUrl + 'scss', sass({
     src: path.join(__dirname, 'scss'),
@@ -94,8 +94,10 @@ app.get('/psc6150/:user/:filepath*', async (req, res, next) => {
     files: files
   }
 
-  res.header("Content-Type",'application/json');
-  res.send(JSON.stringify(payload, null, 4));
+  // res.header("Content-Type",'application/json');
+  // res.send(JSON.stringify(payload, null, 4));
+
+  res.render(__dirname + '/views/pages/main.njk');
 });
 
 app.listen(port, () => {
