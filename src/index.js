@@ -9,12 +9,12 @@ const SetAsyncExtension = require('nunjucks-setasync');
 const rateLimit = require('express-rate-limit');
 
 const { exec } = require('child-process-async');
+import { blockedUserCheck } from './middleware/userblock';
 
 const assetPath = path.resolve(__dirname, '../assets');
 console.log(__dirname);
 
 // Prevent DDoS
-// This should be done on every application at KAABiL regardless of how much traffic we get
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100

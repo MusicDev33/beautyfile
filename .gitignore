@@ -1,3 +1,4 @@
 /node_modules
 kbl-css
 env.njk
+.env
