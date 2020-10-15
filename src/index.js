@@ -8,6 +8,9 @@ const sass = require('node-sass-middleware');
 const SetAsyncExtension = require('nunjucks-setasync');
 const rateLimit = require('express-rate-limit');
 
+require('dotenv').config();
+require('dotenv-defaults').config();
+
 const { exec } = require('child-process-async');
 const userblock = require('./middleware/userblock');
 

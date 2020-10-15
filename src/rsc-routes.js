@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
-const baseUrl = '/psc/'
+const baseUrl = process.env.BASE_URL;
 const assetsBaseUrl = baseUrl + 'assets/'
 
 const baseFilePath = path.join(__dirname, '/../assets/');
 
-console.log(assetsBaseUrl);
-console.log(baseFilePath);
+console.log(`Assets Path: ${assetsBaseUrl}`);
+console.log(`Base File Path: ${baseFilePath}`);
 
 module.exports = (app) => {
   app.use(assetsBaseUrl + 'fa/', express.static(baseFilePath + 'fa'));
