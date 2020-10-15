@@ -8,7 +8,6 @@ const sass = require('node-sass-middleware');
 const SetAsyncExtension = require('nunjucks-setasync');
 const rateLimit = require('express-rate-limit');
 
-require('dotenv').config();
 require('dotenv-defaults').config();
 
 const { exec } = require('child-process-async');
@@ -60,7 +59,6 @@ const homeDict = {
 };
 
 nunEnv.addGlobal(`BASE_URL`, process.env.NUNJUCKS_BASE_URL);
-console.log(process.env.NUNJUCKS_BASE_URL);
 
 const homePath = homeDict[process.platform];
 
