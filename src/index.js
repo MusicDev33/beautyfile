@@ -59,6 +59,9 @@ const homeDict = {
   'linux': '/home'
 };
 
+nunEnv.addGlobal(`BASE_URL`, process.env.NUNJUCKS_BASE_URL);
+console.log(process.env.NUNJUCKS_BASE_URL);
+
 const homePath = homeDict[process.platform];
 
 app.get('/:user', userblock, async (req, res, next) => {
