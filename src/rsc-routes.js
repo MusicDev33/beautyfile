@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
-const baseUrl = '/'
+const baseUrl = '/psc/'
 const assetsBaseUrl = baseUrl + 'assets/'
 
 const baseFilePath = path.join(__dirname, '/../assets/');

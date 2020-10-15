@@ -1,17 +1,14 @@
 const blockedUsers = process.env.BLOCKED_USERS?.split(',');
 
-const blockedUserCheck = (req, res, next) => {
+module.exports = (req, res, next) => {
   if (!blockedUsers) {
+    console.log('not');
     return next();
   }
 
-  if blockedUsers.includes(req.params.user) {
+  if (blockedUsers.includes(req.params.user)) {
     return res.sendStatus(401);
   }
 
   next();
-}
-
-module.exports = {
-  blockedUserCheck
 }

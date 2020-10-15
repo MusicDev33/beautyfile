@@ -9,7 +9,7 @@ const SetAsyncExtension = require('nunjucks-setasync');
 const rateLimit = require('express-rate-limit');
 
 const { exec } = require('child-process-async');
-import { blockedUserCheck } from './middleware/userblock';
+const userblock = require('./middleware/userblock');
 
 const assetPath = path.resolve(__dirname, '../assets');
 console.log(__dirname);
@@ -58,7 +58,7 @@ const homeDict = {
 
 const homePath = homeDict[process.platform];
 
-app.get('/psc6150/:user', async (req, res, next) => {
+app.get('/:user', userblock, async (req, res, next) => {
 
   const totalPath = `${homePath}/${req.params.user}`;
 
@@ -103,7 +103,7 @@ app.get('/psc6150/:user', async (req, res, next) => {
   res.render(__dirname + '/views/pages/main.njk', payload);
 });
 
-app.get('/psc6150/:user/:filepath*', async (req, res, next) => {
+app.get('/:user/:filepath*', userblock, async (req, res, next) => {
 
   const totalPath = `${homePath}/${req.params.user}/${req.params.filepath}/${req.params[0]}`;
 
