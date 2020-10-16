@@ -115,6 +115,13 @@ app.get('/:user/:filepath*', userblock, async (req, res, next) => {
 
   const totalPath = `${homePath}/${req.params.user}/.html/${req.params.filepath}/${req.params[0]}`;
 
+  const fileCheck = await exec(`file ${totalPath}`);
+  const isFile = fileCheck.stdout.split(':')[1].trim().toLowerCase() == 'directory' ? false : true;
+
+  if (isFile) {
+    return res.download(totalPath);
+  }
+
   const { stdout, stderr } = await exec(`ls ${totalPath}`);
 
   let contents = stdout.trim().split(/\r?\n/);

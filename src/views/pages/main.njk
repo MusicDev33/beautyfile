@@ -27,9 +27,11 @@
       <h4>Files</h4>
       {% for file in files %}
         <div class="col-4 my-2 px-2">
-          <div class="w-100 obj p-2">
-            <i class="far fa-file-alt"></i> {{ file }}
-          </div>
+          <a href="{{ BASE_URL }}{{ currentRoute }}/{{ file }}">
+            <div class="w-100 obj p-2">
+              <i class="far fa-file-alt"></i> {{ file }}
+            </div>
+          </a>
         </div>
       {% endfor %}
     </div>
