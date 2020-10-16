@@ -64,11 +64,14 @@ const homePath = homeDict[process.platform];
 
 app.get('/:user', userblock, async (req, res, next) => {
 
-  const totalPath = `${homePath}/${req.params.user}`;
+  const totalPath = `${homePath}/${req.params.user}/.html`;
 
   const { stdout, stderr } = await exec(`ls ${totalPath}`);
 
-  const contents = stdout.trim().split(/\r?\n/);
+  let contents = stdout.trim().split(/\r?\n/);
+  contents = contents.filter((item) => {
+    return item.length > 0;
+  });
 
   const directories = [];
   const files = [];
@@ -83,12 +86,15 @@ app.get('/:user', userblock, async (req, res, next) => {
 
     const output = await exec(`file ${file}`);
     const isDirectory = output.stdout.split(':')[1].trim().toLowerCase();
+    console.log(isDirectory);
     if (isDirectory == 'directory') {
       directories.push(item);
     } else {
       files.push(item);
     }
   }
+
+  console.log(directories);
 
   console.log(req.originalUrl);
 
@@ -109,11 +115,14 @@ app.get('/:user', userblock, async (req, res, next) => {
 
 app.get('/:user/:filepath*', userblock, async (req, res, next) => {
 
-  const totalPath = `${homePath}/${req.params.user}/${req.params.filepath}/${req.params[0]}`;
+  const totalPath = `${homePath}/${req.params.user}/.html/${req.params.filepath}/${req.params[0]}`;
 
   const { stdout, stderr } = await exec(`ls ${totalPath}`);
 
-  const contents = stdout.trim().split(/\r?\n/);
+  let contents = stdout.trim().split(/\r?\n/);
+  contents = contents.filter((item) => {
+    return item.length > 0;
+  });
 
   const directories = [];
   const files = [];
@@ -129,6 +138,7 @@ app.get('/:user/:filepath*', userblock, async (req, res, next) => {
     const output = await exec(`file ${file}`);
     const isDirectory = output.stdout.split(':')[1].trim().toLowerCase();
     if (isDirectory == 'directory') {
+      console.log('dir');
       directories.push(item);
     } else {
       files.push(item);
