@@ -86,15 +86,13 @@ app.get('/:user', userblock, async (req, res, next) => {
 
     const output = await exec(`file ${file}`);
     const isDirectory = output.stdout.split(':')[1].trim().toLowerCase();
-    console.log(isDirectory);
+
     if (isDirectory == 'directory') {
       directories.push(item);
     } else {
       files.push(item);
     }
   }
-
-  console.log(directories);
 
   console.log(req.originalUrl);
 
@@ -138,7 +136,6 @@ app.get('/:user/:filepath*', userblock, async (req, res, next) => {
     const output = await exec(`file ${file}`);
     const isDirectory = output.stdout.split(':')[1].trim().toLowerCase();
     if (isDirectory == 'directory') {
-      console.log('dir');
       directories.push(item);
     } else {
       files.push(item);
