@@ -102,7 +102,9 @@ app.get('/:user', userblock, async (req, res, next) => {
     user: req.params.user,
     dirs: directories,
     files: files,
-    currentRoute: req.originalUrl
+    currentRoute: req.originalUrl.replace(/\/$/, ''),
+    backDir: 'disabled',
+    prevRoute: ''
   }
 
   // res.header("Content-Type",'application/json');
@@ -151,13 +153,20 @@ app.get('/:user/:filepath*', userblock, async (req, res, next) => {
 
   console.log(req.originalUrl);
 
+  const origUrl = req.originalUrl.replace(/\/$/, '');
+  const splitRoute = origUrl.split('/');
+  const routeEndLength = 0 - splitRoute[splitRoute.length - 1].length;
+  const prevRoute = origUrl.slice(0, routeEndLength).replace(/\/$/, '');
+
   const payload = {
     id: req.params.filepath,
     path: req.params,
     user: req.params.user,
     dirs: directories,
     files: files,
-    currentRoute: req.originalUrl
+    currentRoute: req.originalUrl.replace(/\/$/, ''),
+    backDir: '',
+    prevRoute
   }
 
   // res.header("Content-Type",'application/json');

@@ -3,7 +3,12 @@
 {% block content %}
   {% if dirs.length %}
     <div class="row mt-3">
-      <h4>Directories</h4>
+      <h4>
+        <a href="{{ BASE_URL }}{{ prevRoute }}" class="{{ backDir }}">
+          <i class="fas fa-arrow-left back-button {{ backDir }}"></i>
+        </a>
+        Directories
+      </h4>
       {% for directory in dirs %}
         <div class="col-4 my-2 px-2">
           <a href="{{ BASE_URL }}{{ currentRoute }}/{{ directory }}">
@@ -18,7 +23,12 @@
 
   {% if not dirs.length %}
     <div class="row mt-3">
-      <h4>No Directories!</h4>
+      <h4>
+        <a href="{{ BASE_URL }}{{ prevRoute }}" class="{{ backDir }}">
+          <i class="fas fa-arrow-left back-button {{ backDir }}"></i>
+        </a>
+        No Directories!
+      </h4>
     </div>
   {% endif %}
 
