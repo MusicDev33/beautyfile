@@ -11,7 +11,7 @@
       </h4>
       {% for directory in dirs %}
         <div class="col-11 col-sm-6 col-lg-4 col-xl-3 my-2 px-2">
-          <a href="{{ BASE_URL }}{{ currentRoute }}/{{ directory }}">
+          <a href="{{ BASE_URL }}{{ currentRoute }}/{{ directory }}" title="{{ directory }}">
             <div class="w-100 obj p-2 text-truncate">
               <i class="fas fa-folder mr-1"></i> {{ directory }}
             </div>

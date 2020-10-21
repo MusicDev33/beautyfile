@@ -10,7 +10,7 @@ const videoFormats = ['mp4', 'mov', 'wmv', 'flv', 'avi'];
 const imageFormats = ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'svg'];
 const audioFormats = ['wav', 'mp3', 'flac', 'm4a', 'ogg'];
 const codeFormats = [
-  'py', 'pyc', 'cpp', 'c', 'h', 'java', 'class', 'js', 'ts', 'bash', 'php', 'r'
+  'py', 'pyc', 'cpp', 'c', 'h', 'java', 'class', 'js', 'ts', 'bash', 'php', 'r', 'html', 'css', 'scss'
 ];
 const archiveFormats = ['zip', 'gz', 'iso', 'tar', '7z', 'rar'];
 
