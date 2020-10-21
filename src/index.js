@@ -7,6 +7,7 @@ const nunjucks = require('nunjucks');
 const sass = require('node-sass-middleware');
 const SetAsyncExtension = require('nunjucks-setasync');
 const rateLimit = require('express-rate-limit');
+const FileMap = require('./file.map').fileMap;
 
 require('dotenv-defaults').config();
 
@@ -90,7 +91,13 @@ app.get('/:user', userblock, async (req, res, next) => {
     if (isDirectory == 'directory') {
       directories.push(item);
     } else {
-      files.push(item);
+      const splitName = item.split('.');
+
+      const newFile = {
+        name: item,
+        icon: FileMap.get(splitName[splitName.length - 1].toLowerCase()) || 'fa-file-alt'
+      }
+      files.push(newFile);
     }
   }
 
@@ -147,7 +154,13 @@ app.get('/:user/:filepath*', userblock, async (req, res, next) => {
     if (isDirectory == 'directory') {
       directories.push(item);
     } else {
-      files.push(item);
+      const splitName = item.split('.');
+
+      const newFile = {
+        name: item,
+        icon: FileMap.get(splitName[splitName.length - 1]) || 'fa-file-alt'
+      }
+      files.push(newFile);
     }
   }
 

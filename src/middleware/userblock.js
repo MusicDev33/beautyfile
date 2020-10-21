@@ -2,7 +2,6 @@ const blockedUsers = process.env.BLOCKED_USERS?.split(',');
 
 module.exports = (req, res, next) => {
   if (!blockedUsers) {
-    console.log('not');
     return next();
   }
 

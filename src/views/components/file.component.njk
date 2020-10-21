@@ -1,0 +1,7 @@
+{% macro fileComponent(fileObj, link) %}
+  <a href="{{ link }}">
+    <div class="w-100 obj p-2 text-truncate">
+      <i class="far {{ fileObj.icon }} mr-1"></i> {{ fileObj.name }}
+    </div>
+  </a>
+{% endmacro %}

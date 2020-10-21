@@ -14,14 +14,16 @@ body {
 }
 
 .obj {
-
   color: $main-color;
   cursor: pointer;
   border-radius: 12px;
   border: 1px solid $main-color;
   transition: 0.3s;
-  font-size: 110%;
+  font-size: 135%;
   overflow: hidden;
+  padding: 7px 12px!important;
+  overflow: hidden;
+  white-space: nowrap;
 
   &:hover {
     color: $highlight-color;
