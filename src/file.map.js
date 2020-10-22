@@ -10,9 +10,12 @@ const videoFormats = ['mp4', 'mov', 'wmv', 'flv', 'avi'];
 const imageFormats = ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'svg'];
 const audioFormats = ['wav', 'mp3', 'flac', 'm4a', 'ogg'];
 const codeFormats = [
-  'py', 'pyc', 'cpp', 'c', 'h', 'java', 'class', 'js', 'ts', 'bash', 'php', 'r', 'html', 'css', 'scss'
+  'py', 'pyc', 'cpp', 'c', 'h', 'java', 'class', 'js', 'ts', 'bash', 'php', 'r', 'html', 'css', 'scss', 'jar', 'sh'
 ];
 const archiveFormats = ['zip', 'gz', 'iso', 'tar', '7z', 'rar'];
+const wordFormats = ['doc', 'docm', 'docx'];
+const excelFormats = ['xla', 'xlm', 'xls', 'xlsm', 'xlsx'];
+const pptFormats = ['pps', 'ppsm', 'ppsx', 'ppt', 'pptm', 'pptx'];
 
 videoFormats.forEach((format) => {
   fileMap.set(format, 'fa-file-video');
@@ -32,6 +35,18 @@ codeFormats.forEach((format) => {
 
 archiveFormats.forEach((format) => {
   fileMap.set(format, 'fa-file-archive');
+});
+
+wordFormats.forEach((format) => {
+  fileMap.set(format, 'fa-file-word');
+});
+
+excelFormats.forEach((format) => {
+  fileMap.set(format, 'fa-file-excel');
+});
+
+pptFormats.forEach((format) => {
+  fileMap.set(format, 'fa-file-powerpoint');
 });
 
 module.exports.fileMap = fileMap

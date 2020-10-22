@@ -12,6 +12,7 @@ const FileMap = require('./file.map').fileMap;
 require('dotenv-defaults').config();
 
 const { exec } = require('child-process-async');
+const execWrap = require('./exec-wrap').execWrap;
 const userblock = require('./middleware/userblock');
 
 const assetPath = path.resolve(__dirname, '../assets');
@@ -69,6 +70,10 @@ app.get('/:user', userblock, async (req, res, next) => {
 
   const { stdout, stderr } = await exec(`ls ${totalPath}`);
 
+  if (stderr) {
+    return res.render(__dirname + '/views/pages/dir-not-found.njk');
+  }
+
   let contents = stdout.trim().split(/\r?\n/);
   contents = contents.filter((item) => {
     return item.length > 0;
@@ -124,7 +129,12 @@ app.get('/:user/:filepath*', userblock, async (req, res, next) => {
 
   const totalPath = `${homePath}/${req.params.user}/.html/${req.params.filepath}/${req.params[0]}`;
 
-  const fileCheck = await exec(`file ${totalPath}`);
+  const fileCheck = await execWrap(`file ${totalPath}`);
+
+  if (fileCheck === null || fileCheck.stdout.includes('No such file or directory')) {
+    return res.render(__dirname + '/views/pages/dir-not-found.njk');
+  }
+
   const isFile = fileCheck.stdout.split(':')[1].trim().toLowerCase() == 'directory' ? false : true;
 
   if (isFile) {
