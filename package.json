@@ -12,7 +12,7 @@
     "dev-scss": "npm-run-all -p sass:*",
     "dev-js": "nodemon src/index.js",
     "update": "git pull origin master",
-    "production": "NODE_ENV=test node src/index.js"
+    "production": "npm i && NODE_ENV=test node src/index.js"
   },
   "author": "Shelby McCowan",
   "license": "ISC",
