@@ -2,3 +2,6 @@
 kbl-css
 env.njk
 .env
+error.log
+info.log
+/logs

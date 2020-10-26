@@ -8,12 +8,14 @@ const sass = require('node-sass-middleware');
 const SetAsyncExtension = require('nunjucks-setasync');
 const rateLimit = require('express-rate-limit');
 const FileMap = require('./file.map').fileMap;
+const winston = require('winston');
 
 require('dotenv-defaults').config();
 
 const { exec } = require('child-process-async');
 const execWrap = require('./exec-wrap').execWrap;
 const userblock = require('./middleware/userblock');
+const logger = require('./logger').logger;
 
 const assetPath = path.resolve(__dirname, '../assets');
 console.log(__dirname);
@@ -33,17 +35,6 @@ let nunEnv = nunjucks.configure(__dirname + '/views', {
   autoescape: true,
   express: app
 });
-
-/*
-app.use(baseUrl + 'scss', sass({
-    src: path.join(__dirname, 'scss'),
-    includePaths: ['scss', 'views'],
-    dest: path.join(__dirname, '/../public/css'),
-    debug: true,
-    outputStyle: 'compressed',
-    prefix:  '/css'  // Where prefix is at <link rel="stylesheets" href="prefix/style.css"/>
-}));
-*/
 
 app.use(cors());
 
@@ -67,6 +58,13 @@ const homePath = homeDict[process.platform];
 app.get('/:user', userblock, async (req, res, next) => {
 
   const totalPath = `${homePath}/${req.params.user}/.html`;
+
+  const fileCheck = await execWrap(`file ${totalPath}`);
+
+  if (fileCheck === null || fileCheck.stdout.includes('No such file or directory')) {
+    logger.error(`User tried to access path '${totalPath}' and it failed.`);
+    return res.render(__dirname + '/views/pages/dir-not-found.njk');
+  }
 
   const { stdout, stderr } = await exec(`ls ${totalPath}`);
 
@@ -122,6 +120,8 @@ app.get('/:user', userblock, async (req, res, next) => {
   // res.header("Content-Type",'application/json');
   // res.send(JSON.stringify(payload, null, 4));
 
+  logger.info(`User successfully accessed path '${totalPath}'`);
+
   res.render(__dirname + '/views/pages/main.njk', payload);
 });
 
@@ -132,6 +132,7 @@ app.get('/:user/:filepath*', userblock, async (req, res, next) => {
   const fileCheck = await execWrap(`file ${totalPath}`);
 
   if (fileCheck === null || fileCheck.stdout.includes('No such file or directory')) {
+    logger.error(`User tried to access path '${totalPath}' and it failed.`);
     return res.render(__dirname + '/views/pages/dir-not-found.njk');
   }
 
@@ -174,8 +175,6 @@ app.get('/:user/:filepath*', userblock, async (req, res, next) => {
     }
   }
 
-  console.log(req.originalUrl);
-
   const origUrl = req.originalUrl.replace(/\/$/, '');
   const splitRoute = origUrl.split('/');
   const routeEndLength = 0 - splitRoute[splitRoute.length - 1].length;
@@ -194,6 +193,8 @@ app.get('/:user/:filepath*', userblock, async (req, res, next) => {
 
   // res.header("Content-Type",'application/json');
   // res.send(JSON.stringify(payload, null, 4));
+
+  logger.info(`User successfully accessed path '${totalPath}'`);
 
   res.render(__dirname + '/views/pages/main.njk', payload);
 });
