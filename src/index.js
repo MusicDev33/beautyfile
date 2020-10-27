@@ -92,7 +92,12 @@ app.get('/:user', userblock, async (req, res, next) => {
     const isDirectory = output.stdout.split(':')[1].trim().toLowerCase();
 
     if (isDirectory == 'directory') {
-      directories.push(item);
+      const newDirectory = {
+        name: item,
+        link: item.trim().replace(' ', '%20')
+      }
+      console.log(newDirectory.link);
+      directories.push(newDirectory);
     } else {
       const splitName = item.split('.');
 
@@ -127,7 +132,11 @@ app.get('/:user', userblock, async (req, res, next) => {
 
 app.get('/:user/:filepath*', userblock, async (req, res, next) => {
 
-  const totalPath = `${homePath}/${req.params.user}/.html/${req.params.filepath}/${req.params[0]}`;
+  let totalPath = `${homePath}/${req.params.user}/.html/${req.params.filepath}/${req.params[0]}`;
+  if (totalPath.includes(' ')) {
+    totalPath = `'${totalPath}'`;
+  }
+  console.log(totalPath);
 
   const fileCheck = await execWrap(`file ${totalPath}`);
 
@@ -163,7 +172,12 @@ app.get('/:user/:filepath*', userblock, async (req, res, next) => {
     const output = await exec(`file ${file}`);
     const isDirectory = output.stdout.split(':')[1].trim().toLowerCase();
     if (isDirectory == 'directory') {
-      directories.push(item);
+      const newDirectory = {
+        name: item,
+        link: item.trim().replace(' ', '%20')
+      }
+      console.log(newDirectory.link);
+      directories.push(newDirectory);
     } else {
       const splitName = item.split('.');
 
