@@ -57,7 +57,11 @@ const homePath = homeDict[process.platform];
 
 app.get('/:user', userblock, async (req, res, next) => {
 
-  const totalPath = `${homePath}/${req.params.user}/.html`;
+  let totalPath = `${homePath}/${req.params.user}/.html`;
+
+  if (req.params.user == 'rkaundal') {
+    totalPath = `${homePath}/${req.params.user}/.psc6150`;
+  }
 
   const fileCheck = await execWrap(`file ${totalPath}`);
 
@@ -133,6 +137,11 @@ app.get('/:user', userblock, async (req, res, next) => {
 app.get('/:user/:filepath*', userblock, async (req, res, next) => {
 
   let totalPath = `${homePath}/${req.params.user}/.html/${req.params.filepath}/${req.params[0]}`;
+
+  if (req.params.user == 'rkaundal') {
+    totalPath = `${homePath}/${req.params.user}/.psc6150/${req.params.filepath}/${req.params[0]}`;
+  }
+
   if (totalPath.includes(' ')) {
     totalPath = `'${totalPath}'`;
   }
