@@ -92,8 +92,18 @@ app.get('/:user', userblock, async (req, res, next) => {
       file = path.join(totalPath, item);
     }
 
-    const output = await exec(`file ${file}`);
-    const isDirectory = output.stdout.split(':')[1].trim().toLowerCase();
+    let output = await exec(`file ${file}`);
+    let isDirectory = output.stdout.split(':')[1].trim().toLowerCase();
+
+    if (isDirectory && isDirectory.includes('symbolic link')) {
+      file = isDirectory.substring(
+          isDirectory.lastIndexOf('\`') + 1,
+          isDirectory.lastIndexOf('\'')
+      );
+
+      output = await exec(`file ${file}`);
+      isDirectory = output.stdout.split(':')[1].trim().toLowerCase();
+    }
 
     if (isDirectory == 'directory') {
       const newDirectory = {
