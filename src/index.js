@@ -59,7 +59,7 @@ app.get('/:user', userblock, async (req, res, next) => {
 
   let totalPath = `${homePath}/${req.params.user}/.html`;
 
-  if (req.params.user == 'rkaundal') {
+  if (req.params.user == 'rkaundal' || req.params.user == 'roussie') {
     totalPath = `${homePath}/${req.params.user}/.psc6150`;
   }
 
@@ -148,7 +148,7 @@ app.get('/:user/:filepath*', userblock, async (req, res, next) => {
 
   let totalPath = `${homePath}/${req.params.user}/.html/${req.params.filepath}/${req.params[0]}`;
 
-  if (req.params.user == 'rkaundal') {
+  if (req.params.user == 'rkaundal' || req.params.user == 'roussie') {
     totalPath = `${homePath}/${req.params.user}/.psc6150/${req.params.filepath}/${req.params[0]}`;
   }
 
