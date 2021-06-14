@@ -1,14 +1,10 @@
 const cors = require('cors');
 const express = require('express');
 const fs = require('fs');
-const https = require('https');
 const path = require('path');
 const nunjucks = require('nunjucks');
-const sass = require('node-sass-middleware');
-const SetAsyncExtension = require('nunjucks-setasync');
 const rateLimit = require('express-rate-limit');
 const FileMap = require('./file.map').fileMap;
-const winston = require('winston');
 
 require('dotenv-defaults').config();
 
