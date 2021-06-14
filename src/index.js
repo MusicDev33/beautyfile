@@ -155,7 +155,6 @@ app.get('/:user/:filepath*', userblock, async (req, res, next) => {
   if (totalPath.includes(' ')) {
     totalPath = `'${totalPath}'`;
   }
-  console.log(totalPath);
 
   const fileCheck = await execWrap(`file ${totalPath}`);
 
@@ -167,7 +166,7 @@ app.get('/:user/:filepath*', userblock, async (req, res, next) => {
   const isFile = fileCheck.stdout.split(':')[1].trim().toLowerCase() == 'directory' ? false : true;
 
   if (isFile) {
-    return res.download(totalPath);
+    return res.download(totalPath.substring(0, totalPath.length - 1));
   }
 
   const { stdout, stderr } = await exec(`ls ${totalPath}`);
