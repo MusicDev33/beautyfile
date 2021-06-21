@@ -93,9 +93,6 @@ app.get('/:user', async (req, res, next) => {
     prevRoute: ''
   }
 
-  // res.header("Content-Type",'application/json');
-  // res.send(JSON.stringify(payload, null, 4));
-
   logger.info(`User successfully accessed path '${totalPath}'`);
 
   res.render(__dirname + '/views/pages/main.njk', payload);
