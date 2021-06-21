@@ -1,10 +1,10 @@
 const cors = require('cors');
 const express = require('express');
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
 const nunjucks = require('nunjucks');
-const rateLimit = require('express-rate-limit');
 const FileMap = require('./file.map').fileMap;
+const canStart = require('./startup').checkArgs;
 
 require('dotenv-defaults').config();
 
@@ -16,14 +16,10 @@ const logger = require('./logger').logger;
 const assetPath = path.resolve(__dirname, '../assets');
 console.log(__dirname);
 
-// Prevent DDoS
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100
-});
+const startObject = canStart();
 
-const baseUrl = '/';
-const port = 4020;
+const port = startObject.port;
+const baseDir = startObject.dir;
 
 const app = express();
 
@@ -51,81 +47,46 @@ nunEnv.addGlobal(`BASE_URL`, process.env.NUNJUCKS_BASE_URL);
 
 const homePath = homeDict[process.platform];
 
-app.get('/:user', userblock, async (req, res, next) => {
+app.get('/:user', async (req, res, next) => {
+  let totalPath = `${baseDir}/${req.params.user}`;
+  console.log(totalPath);
 
-  let totalPath = `${homePath}/${req.params.user}/.html`;
-
-  if (req.params.user == 'rkaundal' || req.params.user == 'roussie') {
-    totalPath = `${homePath}/${req.params.user}/.psc6150`;
+  try {
+    results = await fs.readdir(totalPath);
+  } catch (e) {
+    return res.json({success: false});
   }
 
-  const fileCheck = await execWrap(`file ${totalPath}`);
+  let files = [];
+  let dirs = [];
 
-  if (fileCheck === null || fileCheck.stdout.includes('No such file or directory')) {
-    logger.error(`User tried to access path '${totalPath}' and it failed.`);
-    return res.render(__dirname + '/views/pages/dir-not-found.njk');
-  }
+  for (let file of results) {
+    const stat = await fs.lstat(`${baseDir}/${req.params.user.replace(/\/$/, '')}/${file}`);
 
-  const { stdout, stderr } = await exec(`ls ${totalPath}`);
-
-  if (stderr) {
-    return res.render(__dirname + '/views/pages/dir-not-found.njk');
-  }
-
-  let contents = stdout.trim().split(/\r?\n/);
-  contents = contents.filter((item) => {
-    return item.length > 0;
-  });
-
-  const directories = [];
-  const files = [];
-
-  for (const item of contents) {
-    let file = '';
-    if (item.includes(' ')) {
-      file = `'${path.join(totalPath, item)}'`;
-    } else {
-      file = path.join(totalPath, item);
-    }
-
-    let output = await exec(`file ${file}`);
-    let isDirectory = output.stdout.split(':')[1].trim().toLowerCase();
-
-    if (isDirectory && isDirectory.includes('symbolic link')) {
-      file = isDirectory.substring(
-          isDirectory.lastIndexOf('\`') + 1,
-          isDirectory.lastIndexOf('\'')
-      );
-
-      output = await exec(`file ${file}`);
-      isDirectory = output.stdout.split(':')[1].trim().toLowerCase();
-    }
-
-    if (isDirectory == 'directory') {
-      const newDirectory = {
-        name: item,
-        link: item.trim().replace(' ', '%20')
-      }
-      console.log(newDirectory.link);
-      directories.push(newDirectory);
-    } else {
-      const splitName = item.split('.');
+    if (stat.isFile()) {
+      const splitName = file.split('.');
 
       const newFile = {
-        name: item,
+        name: file,
         icon: FileMap.get(splitName[splitName.length - 1].toLowerCase()) || 'fa-file-alt'
       }
       files.push(newFile);
+    } else if (stat.isDirectory()) {
+      const newDirectory = {
+        name: file,
+        link: file.trim().replace(' ', '%20')
+      }
+      dirs.push(newDirectory);
+    } else {
+      console.log('Error');
     }
   }
-
-  console.log(req.originalUrl);
 
   const payload = {
     id: req.params.filepath,
     path: req.params,
     user: req.params.user,
-    dirs: directories,
+    dirs: dirs,
     files: files,
     currentRoute: req.originalUrl.replace(/\/$/, ''),
     backDir: 'disabled',
@@ -138,6 +99,7 @@ app.get('/:user', userblock, async (req, res, next) => {
   logger.info(`User successfully accessed path '${totalPath}'`);
 
   res.render(__dirname + '/views/pages/main.njk', payload);
+
 });
 
 app.get('/:user/:filepath*', userblock, async (req, res, next) => {
