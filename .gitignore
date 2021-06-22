@@ -5,3 +5,4 @@ env.njk
 error.log
 info.log
 /logs
+server.config.json
