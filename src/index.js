@@ -69,16 +69,21 @@ app.get('/psc/:user', userblock, async (req, res, next) => {
     }
   }
 
+  let currentRoute = req.originalUrl;
+
+
   const payload = {
     id: req.params.filepath,
     path: req.params,
     user: req.params.user,
     dirs: dirs,
     files: files,
-    currentRoute: req.originalUrl.replace(/\/$/, ''),
+    currentRoute: req.originalUrl.replace(/\/$/, '').replace('psc/', ''),
     backDir: 'disabled',
     prevRoute: ''
   }
+
+  console.log(payload);
 
   logger.info(`User successfully accessed path '${totalPath}'`);
 
@@ -136,10 +141,12 @@ app.get('/psc/:user/:filepath*', userblock, async (req, res, next) => {
     user: req.params.user,
     dirs: dirs,
     files: files,
-    currentRoute: req.originalUrl.replace(/\/$/, ''),
+    currentRoute: req.originalUrl.replace(/\/$/, '').replace('psc/', ''),
     backDir: '',
     prevRoute
   }
+
+  console.log(payload);
 
   logger.info(`User successfully accessed path '${totalPath}'`);
 
