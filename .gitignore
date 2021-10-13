@@ -6,3 +6,4 @@ error.log
 info.log
 /logs
 server.config.json
+psc.config.json
