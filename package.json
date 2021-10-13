@@ -12,7 +12,7 @@
     "sass:importer": "node src/importer.js",
     "dev-scss": "npm-run-all -p sass:*",
     "dev-js": "nodemon src/index.js",
-    "update": "git pull origin master && npm i && pm2 restart btfile",
+    "update": "git pull origin main && npm i && pm2 restart btfile",
     "production": "npm i && NODE_ENV=production node src/index.js"
   },
   "author": "Shelby McCowan",
