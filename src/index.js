@@ -48,7 +48,7 @@ app.get('/psc/:user', userblock, async (req, res, next) => {
   let dirs = [];
 
   for (let file of results) {
-    const stat = await fs.lstat(`${baseDir}/${req.params.user.replace(/\/$/, '')}/${file}`);
+    const stat = await fs.lstat(`/home/${req.params.user.replace(/\/$/, '')}/${file}`);
 
     if (stat.isFile()) {
       const splitName = file.split('.');
