@@ -61,7 +61,7 @@ app.get('/psc/:user', userblock, async (req, res, next) => {
     } else if (stat.isDirectory()) {
       const newDirectory = {
         name: file,
-        link: file.trim().replace(' ', '%20')
+        link: file.trim().replace(' ', '%20').replace('psc/', '')
       }
       dirs.push(newDirectory);
     } else {
@@ -117,7 +117,7 @@ app.get('/psc/:user/:filepath*', userblock, async (req, res, next) => {
     } else if (stat.isDirectory()) {
       const newDirectory = {
         name: file,
-        link: file.trim().replace(' ', '%20')
+        link: file.trim().replace(' ', '%20').replace('psc/', '')
       }
       dirs.push(newDirectory);
     } else {
