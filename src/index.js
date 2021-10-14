@@ -49,6 +49,7 @@ app.get('/psc/:user', userblock, async (req, res, next) => {
 
   for (let file of results) {
     const stat = await fs.lstat(`/home/${req.params.user.replace(/\/$/, '')}/.psc/${file}`);
+    console.log(file)
 
     if (stat.isFile()) {
       const splitName = file.split('.');
@@ -122,7 +123,7 @@ app.get('/psc/:user/:filepath*', userblock, async (req, res, next) => {
     } else if (stat.isDirectory()) {
       const newDirectory = {
         name: file,
-        link: file.trim().replace(' ', '%20').replace('psc/', '')
+        link: file.trim().replace(' ', '%20')
       }
       dirs.push(newDirectory);
     } else {
