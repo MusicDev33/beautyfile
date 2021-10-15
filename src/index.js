@@ -154,7 +154,7 @@ app.get('/psc/:user/:filepath*', userblock, async (req, res, next) => {
   res.render(__dirname + '/views/pages/main.njk', payload);
 });
 
-app.get('/:user', userblock, async (req, res, next) => {
+app.get('/publications/:user', userblock, async (req, res, next) => {
   let totalPath = `${baseDir}/${req.params.user}`;
   console.log(totalPath);
 
@@ -206,7 +206,7 @@ app.get('/:user', userblock, async (req, res, next) => {
 });
 
 // TODO: Rewrite this whole thing
-app.get('/:user/:filepath*', userblock, async (req, res, next) => {
+app.get('/publications/:user/:filepath*', userblock, async (req, res, next) => {
   let totalPath = `${baseDir}/${req.params.user}/${req.params.filepath}/${req.params[0]}`.replace(/\/$/, '');
 
   const stat = await fs.lstat(totalPath);
