@@ -62,7 +62,7 @@ app.get('/psc/:user', userblock, async (req, res, next) => {
     } else if (stat.isDirectory()) {
       const newDirectory = {
         name: file,
-        link: file.trim().replace(' ', '%20').replace('psc/', '')
+        link: file.trim().replace(' ', '%20')
       }
       dirs.push(newDirectory);
     } else {
@@ -79,7 +79,7 @@ app.get('/psc/:user', userblock, async (req, res, next) => {
     user: req.params.user,
     dirs: dirs,
     files: files,
-    currentRoute: req.originalUrl.replace(/\/$/, '').replace('psc/', ''),
+    currentRoute: req.originalUrl.replace(/\/$/, ''),
     backDir: 'disabled',
     prevRoute: ''
   }
@@ -142,7 +142,7 @@ app.get('/psc/:user/:filepath*', userblock, async (req, res, next) => {
     user: req.params.user,
     dirs: dirs,
     files: files,
-    currentRoute: req.originalUrl.replace(/\/$/, '').replace('psc/', ''),
+    currentRoute: req.originalUrl.replace(/\/$/, ''),
     backDir: '',
     prevRoute
   }
