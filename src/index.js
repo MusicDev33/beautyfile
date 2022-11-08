@@ -41,6 +41,8 @@ app.get('/psc/:user', userblock, async (req, res, next) => {
   try {
     results = await fs.readdir(totalPath);
   } catch (e) {
+    console.log('Error');
+    console.log(e);
     return res.json({success: false});
   }
 
